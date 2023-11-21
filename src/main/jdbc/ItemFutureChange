@@ -1,0 +1,22 @@
+package com.walmart.query.jdbc;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class ItemFutureChange {
+
+  private String ruteId;
+
+  private Long itemNbr;
+
+  private String changeEffDate;
+
+  private String changeExpDate;
+
+  private String itemRetailAmt;
+
+  private String custRetailAmt;
+}

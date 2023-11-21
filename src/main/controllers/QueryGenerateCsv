@@ -1,0 +1,38 @@
+package com.walmart.query.controllers;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.walmart.query.jdbc;
+
+@RestController
+@RequestMapping("genFile")
+public class QueryGenerateCsv {
+    
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    @RequestMapping("test")
+    public @ResponseBody ResponseEntity<String> example() {
+        List<String> list = new ArrayList<>();
+        //list.add("Table data...");
+        jdbcTemplate.query(
+                "SELECT RULE_ID, ITEM_NBR, CHANGE_EFF_DATE, CHANGE_EXP_DATE, ITEM_RETAIL_AMT, CUST_RETAIL_AMT FROM ..", new Object[]{},
+                (rs,rowNum) -> new ItemFutureChange(rs.getString("RULE_ID"), rs.getLong("ITEM_NBR"), 
+                rs.getString("CHANGE_EFF_DATE"), rs.getString("CHANGE_EXP_DATE"), 
+                rs.getString("ITEM_RETAIL_AMT"), rs.getString("CUST_RETAIL_AMT")))
+                .forEach(thing -> list.add(thing.toString()));
+        return new ResponseEntity<String>(list.toString(), HttpStatus.OK);
+    }
+
+}
+
